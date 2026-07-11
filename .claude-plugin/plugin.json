@@ -1,7 +1,7 @@
 {
   "name": "glaza",
   "version": "0.2.0",
-  "description": "Local video-to-digest for Claude: dense fps sampling + pHash dedup + local Whisper (Arc/CUDA/CPU), vision fan-out over subagents, then one self-contained HTML конспект. Text-first, nothing leaves the machine.",
+  "description": "Give Claude the ability to watch any video: /glaza extracts the frames, transcribes the speech and hands it all back as one self-contained HTML digest. Dense fps sampling + pHash dedup + local Whisper (NVIDIA/Arc/Apple/CPU), vision fan-out over subagents. Text-first, nothing leaves the machine.",
   "author": { "name": "Egor Silantev" },
   "license": "MIT",
   "keywords": ["video", "digest", "konspekt", "whisper", "local", "ffmpeg", "yt-dlp", "screencast", "vision"]

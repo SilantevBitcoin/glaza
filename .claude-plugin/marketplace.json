@@ -1,6 +1,6 @@
 {
   "name": "glaza",
   "owner": { "name": "Egor Silantev" },
-  "metadata": { "description": "Local content-aware video watcher." },
+  "metadata": { "description": "Give Claude the ability to watch any video → one self-contained HTML digest. Runs locally: nothing leaves your machine." },
   "plugins": [{ "name": "glaza", "source": "./", "category": "productivity" }]
 }
