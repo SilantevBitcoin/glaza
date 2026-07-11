@@ -1,0 +1,9 @@
+.env
+__pycache__/
+*.pyc
+/dist/
+/tmp/
+watch-*/
+glaza-*/
+.superpowers/
+*.ov.json

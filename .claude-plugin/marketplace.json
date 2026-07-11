@@ -1,0 +1,6 @@
+{
+  "name": "glaza",
+  "owner": { "name": "Egor Silantev" },
+  "metadata": { "description": "Local content-aware video watcher." },
+  "plugins": [{ "name": "glaza", "source": "./", "category": "productivity" }]
+}

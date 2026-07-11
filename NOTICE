@@ -1,0 +1,4 @@
+/glaza reuses the yt-dlp argv-injection hardening (`--` before the URL,
+is_url rejecting `-`-prefixed sources, Path.resolve before ffmpeg) from
+claude-watch by taoufik, itself built on claude-video by Bradley Bonanno.
+Both MIT-licensed. Everything else in /glaza is original.
