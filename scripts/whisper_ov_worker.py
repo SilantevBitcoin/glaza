@@ -1,4 +1,5 @@
-"""Run under OV_PYTHON (ovenv). Writes JSON [{start,end,text}] to <out_json>.
+"""Run under OV_PYTHON — the interpreter that has openvino-genai + librosa installed.
+Writes JSON [{start,end,text}] to <out_json>.
 usage: whisper_ov_worker.py <model_dir> <audio> <lang> <device> <out_json>"""
 import sys, json
 import librosa
