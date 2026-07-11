@@ -88,7 +88,27 @@ python "${CLAUDE_SKILL_DIR}/scripts/inline_images.py" "<out>/digest.raw.html" "<
 Result: one portable `digest.html`. Give the user the path.
 
 ### Стиль (планка = эталонный конспект)
-Self-contained single file. Dark + light theme (system default via `prefers-color-scheme` **plus** a toggle button that stamps `data-theme`). Sticky top-nav with the active section highlighted. Hero: title, one-line lede, mono meta-chips (длительность, тема, N разделов). Sections of **тезис-карточки** (заголовок + пояснение + `«дословная цитата»`). `<details>` for secondary «договорённости/цитаты». A **глоссарий** of terms. A **footer disclaimer**: составлено по локальной транскрипции; названия/термины могли быть расслышаны неточно. Screens are illustrations inside the relevant thesis, `max-width:100%`, and **clickable → lightbox**: the thumbnail stays compact in flow, a click opens the shot large over the page (overlay, closes on click/Esc). Так конспект не растягивается, а читаемость экрана доступна по клику. No horizontal page scroll (wide code/tables scroll in their own container).
+Self-contained single file. Dark + light theme (system default via `prefers-color-scheme` **plus** a toggle button that stamps `data-theme`). Hero: title, one-line lede, mono meta-chips (длительность, тема, N разделов). Sections of **тезис-карточки** (заголовок + пояснение + `«дословная цитата»`). `<details>` for secondary «договорённости/цитаты». A **глоссарий** of terms. A **footer disclaimer**: составлено по локальной транскрипции; названия/термины могли быть расслышаны неточно. Screens are illustrations inside the relevant thesis, `max-width:100%`, and **clickable → lightbox**: the thumbnail stays compact in flow, a click opens the shot large over the page (overlay, closes on click/Esc). Так конспект не растягивается, а читаемость экрана доступна по клику. No horizontal page scroll (wide code/tables scroll in their own container).
+
+### Навигация — вертикальное оглавление, НЕ горизонтальная полоса
+Список глав растёт вниз, поэтому переживает любое их число. Горизонтальная полоса упирается в ширину экрана (замерено: ~16 глав — потолок, дальше переполнение), начинает скроллиться и **прячет первые главы**, а листать её мышью нечем (только Shift+колесо, о чём никто не догадывается).
+
+- **Широкий экран** (`min-width:1400px`) — закреплённый (`position:fixed`) список слева от текста, в пустом поле рядом с колонкой 900px. Все главы всегда видны и кликабельны.
+- **Уже** — кнопка «☰ Главы» с выпадающей панелью + крошка с названием текущей главы в шапке.
+- Не влезло по высоте → список скроллится **внутри себя** (`overflow-y:auto`, `overscroll-behavior:contain`), документ не трогает. Проверено на 40 главах.
+
+### Ссылки — кликабельные, в новую вкладку
+Каждый упомянутый в конспекте внешний ресурс (сайт инструмента, каталог, сам первоисточник) — **живая ссылка**, а не жирный текст: `<a href="…" target="_blank" rel="noopener noreferrer">`. Домен, набранный текстом, читатель видит, но нажать не может — а конспект нужен, чтобы по нему работать.
+- **Адрес не выдумывать.** Ставь ссылку, только если URL виден на кадре (адресная строка в демо) или дан пользователем. Не уверен — оставь текстом.
+- **В подвал — ссылку на первоисточник** (видео), из которого собран конспект.
+- **Не трогать:** внутренние якоря оглавления (им незачем новая вкладка) и адреса внутри `<pre>`/`<code>` — это код для копирования, а не навигация.
+- Помечай внешние ссылки подчёркиванием (`a[target="_blank"]`), иначе в таблице они сливаются с текстом.
+
+### Грабли вёрстки (каждая стоила отладки — не наступать заново)
+1. **Не `scrollIntoView` для подсветки активной главы.** При `scroll-padding-top` (отступ под липкую шапку) браузер считает ссылку внутри шапки недовиденной и откручивает **сам документ** — замерено −65px на каждое срабатывание. Пользователь крутит вниз, страница отматывает назад. Держи активную ссылку видимой ручным `scrollTop` контейнера.
+2. **Активную главу считай по позиции, а не по событию `IntersectionObserver`.** Наблюдатель отдаёт ту секцию, что последней попала в `entries`, а не ту, что под шапкой — подсветка врёт (вверху страницы горела глава 5). Проще и точнее: на `scroll` (passive + throttle через `rAF`) найти последнюю секцию с `getBoundingClientRect().top <= 90`.
+3. **У каждого `<img>` — `width`/`height`** (+ `loading="lazy"`, `decoding="async"`). Без них раскладка скачет по мере декодирования; на длинной странице с десятком кадров 1920×1080 это бьёт по скроллу.
+4. **Проверяй в браузере, а не на глаз.** Открыть через `python -m http.server` (протокол `file:` в Playwright-MCP заблокирован), прогнать: документ не уезжает сам (`scrollTo(y)` → `scrollY === y`), нет горизонтального скролла, все картинки `naturalWidth > 0`, консоль чистая, оглавление на ширинах 1870 / 1280 / 390.
 
 ## Step 7 — cleanup (last)
 After the digest is saved, delete the glaza work dir(s) — the **downloaded video**, frames, audio — **and the digest's own leftovers**: `<out>/screens/` (already inlined as base64) and `<out>/digest.raw.html`. Only `digest.html` remains. `rm` may be sandbox-blocked → use Python:
