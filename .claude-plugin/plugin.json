@@ -1,6 +1,6 @@
 {
   "name": "glaza",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Give Claude the ability to watch any video: /glaza extracts the frames, transcribes the speech and hands it all back as one self-contained HTML digest. Dense fps sampling + pHash dedup + local Whisper (NVIDIA/Arc/Apple/CPU), vision fan-out over subagents. Text-first, nothing leaves the machine.",
   "author": { "name": "Egor Silantev" },
   "license": "MIT",
